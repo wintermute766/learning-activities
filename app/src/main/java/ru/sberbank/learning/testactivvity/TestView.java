@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -67,4 +69,47 @@ public class TestView extends View {
         super.onDraw(canvas);
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
+    }
+
+    private static class SavedState extends BaseSavedState {
+
+        private int counter;
+
+        public SavedState(Parcel source) {
+            super(source);
+            counter = source.readInt();
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        public SavedState(Parcel source, ClassLoader loader) {
+            super(source, loader);
+            counter = source.readInt();
+        }
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(counter);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Creator<SavedState>() {
+                    @Override
+                    public SavedState createFromParcel(Parcel source) {
+                        return new SavedState(source);
+                    }
+
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
+    }
 }
