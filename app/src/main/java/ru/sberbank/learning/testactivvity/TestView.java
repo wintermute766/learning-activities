@@ -71,7 +71,17 @@ public class TestView extends View {
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        return super.onSaveInstanceState();
+        SavedState state = new SavedState(super.onSaveInstanceState());
+        state.counter = tapCount;
+        return state;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        tapCount = ss.counter;
+        invalidate();
     }
 
     private static class SavedState extends BaseSavedState {
